@@ -1,0 +1,28 @@
+# https://stackoverflow.com/questions/305378/list-of-tables-db-schema-dump-etc-using-the-python-sqlite3-api
+# by RufusVS
+
+import sqlite3
+
+db_filename = 'cma-artworks.db'
+newline_indent = '\n   '
+
+db=sqlite3.connect(db_filename)
+db.text_factory = str
+cur = db.cursor()
+
+result = cur.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall()
+table_names = sorted(list(zip(*result))[0])
+#print ("\ntables are:"+newline_indent+newline_indent.join(table_names))
+print ("\ntables are:\n")
+print (table_names)
+
+for table_name in table_names:
+    result = cur.execute("PRAGMA table_info('%s')" % table_name).fetchall()
+    column_names = list(zip(*result))[1]
+    print (("\ncolumn names for %s:" % table_name)
+           +newline_indent
+           +(newline_indent.join(column_names)))
+
+db.close()
+print ("\nexiting.")
+
