@@ -3,7 +3,7 @@
     <img v-bind:src="imgsrc()"
          v-bind:alt="artwork.accession_number + '_reduced.jpg'"
          v-bind:title="artwork.title"
-         v-on:click="$emit('artwork-clicked', this)">
+         v-on:click.stop="imgClicked">
   </div>
 </template>
 
@@ -30,6 +30,9 @@ export default {
   methods: {
     imgsrc: function() {
       return '../images/small/' + this.artwork.accession_number + '_reduced.jpg';
+    },
+    imgClicked: function() {
+      this.$emit('artwork-clicked');
     }
   }
 }
