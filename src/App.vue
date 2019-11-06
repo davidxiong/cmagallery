@@ -70,7 +70,6 @@ export default {
       if (this.bigDisplayed) {
         this.bigDisplayed = false;
       }
-      alert('innerW: ' + window.innerWidth + ' innerH: ' + window.innerHeight);
     },
     passTitle: function(title) {
       this.bigAwTitle = title;
