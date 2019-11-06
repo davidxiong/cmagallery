@@ -1,24 +1,43 @@
 <template>
   <div id="app" v-on:click="appClicked">
-    <cmaartwork v-for="(aw, idx) in myJson"
+    <cmaartwork class="cmaaw"
+                v-for="(aw, idx) in myJson"
                 ref="caws"
-                v-bind:key="aw.artwork.accession_number"
-                v-bind:artwork="aw.artwork"
-                v-bind:creator="aw.creator"
-                v-bind:department="aw.department"
-                v-on:artwork-clicked="artworkClicked(aw, idx)"
+                :key="aw.artwork.accession_number"
+                :artwork="aw.artwork"
+                :creator="aw.creator"
+                :department="aw.department"
+                @artwork-clicked="artworkClicked(aw, idx)"
+                slider="no"
     />
     <div v-show="bigDisplayed" class="bawcontainer">
       <bigartwork class="baw"
-                  v-bind:bartwork="curArtwork.artwork"
-                  v-bind:bcreator="curArtwork.creator"
-                  v-bind:bdepartment="curArtwork.department"
-                  v-on:pass-title="passTitle"/>
-      <div class="bawidx">
-        <div id="prevart" v-on:click.stop="prevClicked()" class="prevnextctl">&laquo;</div>
-        <div id="nextart" v-on:click.stop="nextClicked()" class="prevnextctl">&raquo;</div>
-        <div class="bawidxtxt"><strong>{{bigAwTitle}}</strong></div>
-        <div class="bawidxtxt"><strong>{{curIdx}} of {{myJson.length}}</strong></div>
+                  :bartwork="curArtwork.artwork"
+                  :bcreator="curArtwork.creator"
+                  :bdepartment="curArtwork.department"
+                  @pass-title="passTitle"/>
+      <div class="bawidxcontainer">
+        <div class="pncontainer">
+          <div id="prevart" class="prevnextctl" @click.stop="prevClicked()">&laquo;</div>
+          <div id="nextart" class="prevnextctl" @click.stop="nextClicked()">&raquo;</div>
+        </div>
+        <div class="bawidxtxt">
+          <div><strong>{{bigAwTitle}}</strong></div>
+        </div>
+        <div class="bawidxtxt">
+          <div><strong>{{curIdx}} of {{myJson.length}}</strong></div>
+        </div>
+      </div>
+      <div class="slider">
+        <cmaartwork v-for="(saw, sidx) in myJson"
+                    ref="scaws"
+                    :key="saw.artwork.accession_number"
+                    :artwork="saw.artwork"
+                    :creator="saw.creator"
+                    :department="saw.department"
+                    @artwork-clicked="artworkClicked(saw, sidx)"
+                    slider="yes"
+        />
       </div>
     </div>
   </div>
@@ -51,6 +70,7 @@ export default {
       if (this.bigDisplayed) {
         this.bigDisplayed = false;
       }
+      alert('innerW: ' + window.innerWidth + ' innerH: ' + window.innerHeight);
     },
     passTitle: function(title) {
       this.bigAwTitle = title;
@@ -83,6 +103,7 @@ export default {
 
 <style>
 #app {
+  box-sizing: border-box;
   background-color: black;
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   text-align: center;
@@ -91,6 +112,9 @@ export default {
   justify-content: space-around;
   overflow-y: scroll;
   overflow-x: hidden;
+}
+.cmaaw {
+  vertical-align: text-bottom;
 }
 .bawcontainer {
   color: white;
@@ -104,25 +128,45 @@ export default {
 }
 .baw {
   position: relative;
-  top: 0;
-  left: 0;
   padding: 5px 0px 15px 0px;
 }
-.bawidx {
+.bawidxcontainer {
   width: 100%;
   height: 50px;
   position: fixed;
   top: 80%;
   left: 0;
-  text-align: center;
   z-index: 110;
 }
 .bawidxtxt {
-  vertical-align: bottom;
+  width: 100%;
+  margin: 0 10px;
+  display: block;
+  text-align: center;
+}
+@media screen and (max-width: 600px) {
+  .bawidxtxt div {
+    max-width: 200px;
+    display: inline-block;
+    vertical-align: text-bottom;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+@media screen and (min-width: 601px) {
+  .bawidxtxt div {
+    max-width: 60%;
+    display: inline-block;
+    vertical-align: text-bottom;
+  }
+}
+.pncontainer {
+  position: relative;
 }
 .prevnextctl {
-  position: absolute;
-  top: 80;
+  position: fixed;
+  top: 80%;
   font-size: 30px;
   min-width: 40px;
   min-height: 40px;
@@ -145,6 +189,16 @@ export default {
 }
 #nextart {
   left: 70%;
+}
+.slider {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  overflow-x: hidden;
 }
 
 </style>

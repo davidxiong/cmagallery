@@ -17,7 +17,9 @@
         <p><strong>Name: </strong><span id=bdptextname></span> </p>
       </div>
     </div>
-    <img id="bawimg">
+    <div id="bimgcontainer">
+      <img id="bawimg">
+    </div>
   </div>
 </template>
 
@@ -70,56 +72,75 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .bartwork {
+    box-sizing: border-box;
     color: white;
     position: relative;
     left: 0;
     top: 0;
-    width: 100%;
-    height: 70%;
+    max-width: 100%;
+    height: 80%;
     z-index: 100;
+    overflow: auto;
   }
+@media screen and (min-width: 951px) {
+  #bawcontainer {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 20%;
+  }
+  #rightcontainer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 20%;
+  }
+}
+@media screen and (max-width: 950px) {
+  .bartwork {
+    display: flex;
+    flex-direction: column;
+  }
+  #bawcontainer {
+    position: relative;
+  }
+  #rightcontainer {
+    position: relative;
+  }
+  #bcrtext {
+    margin: 20px 0 0 0;
+  }
+}
   .textcontainer {
     text-align: left;
-    margin: 20px;
-    width: 20%;
-    padding: 0 15px 0 20px;
+    padding: 0;
     transition: all 500ms;
-    border: 4px solid white;
+    border: 2px solid white;
     border-radius: 5px;
     background-color: black;
   }
-  #bawcontainer {
-    top: 0;
-    left: 0;
+  .textcontainer > p {
+    margin: 16px 10px 16px 10px;
   }
   #bawcontainer p:nth-child(4) {
     line-height: 2;
   }
-  #rightcontainer {
-    position: fixed;
-    top: 0;
-    left: 72%;
-    width: 100%;
-  }
   #bcrtext {
-    top: 0;
-    left: 0;
+    position: relative;
+    width: 100%;
   }
   #bcrtext p:nth-child(3) {
     line-height: 2;
   }
   #bdptext {
-    left: 0;
+    position: relative;
+    width: 100%;
+    margin: 20px 0 0 0;
   }
   #bdptext p:nth-child(2) {
     line-height: 2;
   }
- .bartwork img {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
+  img {
     width: auto;
     height: auto;
     margin: auto;

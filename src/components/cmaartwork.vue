@@ -1,9 +1,10 @@
 <template>
-  <div class="cartwork">
+  <div class="cartwork" :class="{ imgslider: slider == 'yes'}">
     <img v-bind:src="imgsrc()"
-         v-bind:alt="artwork.accession_number + '_reduced.jpg'"
-         v-bind:title="artwork.title"
-         v-on:click.stop="imgClicked">
+         :alt="artwork.accession_number + '_reduced.jpg'"
+         :title="artwork.title"
+         :class="{ imgslider: slider == 'yes'}"
+         @click.stop="imgClicked">
   </div>
 </template>
 
@@ -25,7 +26,8 @@ export default {
     department: {
       id: String,
       name: String
-    }
+    },
+    slider: String
   },
   methods: {
     imgsrc: function() {
@@ -41,25 +43,38 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .cartwork {
-    margin: 15px;
+    margin: 5px 10px;
+    max-width: 100px;
+    height: auto;
   }
-  img {
+  .cartwork.imgslider {
+    max-width: 75px;
+    height: 100%;
+    max-height: 75px;
+  }
+  .cartwork img {
     border: 2px solid #fff;
     border-radius: 5px;
-    opacity: 0.9;
     color: white;
+    opacity: 0.9;
+    vertical-align: bottom;
 
     transition: all 500ms;
     z-index: 1;
     position: relative;
   }
-
-  img:hover {
+  .cartwork img.imgslider {
+    opacity: 0.6;
+    vertical-align: middle;
+  }
+  .cartwork img:hover {
     background-color: blue;
     border-color: yellow;
     opacity: 1.0;
-    transform: scale(1.5);
     cursor: pointer;
     z-index: 10;
+  }
+  .cartwork img:hover:not(.imgslider) {
+    transform: scale(1.5);
   }
 </style>
